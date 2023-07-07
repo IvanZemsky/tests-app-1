@@ -1,0 +1,17 @@
+.header-nav {
+  .header-links {
+    display: flex;
+    .header-link {
+      margin: 10px 20px;
+      list-style: none;
+      font-weight: bold;
+      a {
+        text-decoration: none;
+        color: #fff;
+        &:hover {
+          color: #ffe5b5;
+        }
+      }
+    }
+  }
+}

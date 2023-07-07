@@ -1,0 +1,61 @@
+.tests-output {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 15px;
+  .test-card {
+    background: #101010;
+    max-width: 350px;
+    max-height: 500px;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    .test-image {
+      overflow: hidden;
+      border-radius: 10px;
+      a {
+        display: block;
+        height: 250px;
+        margin-bottom: 10px;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+    .test-info {
+      position: relative;
+      padding: 15px;
+      padding-bottom: 30px;
+      h3 a {
+        text-decoration: none;
+        color: #fff;
+        font-size: 21px;
+        &:hover {
+          color: #ffe5b5;
+        }
+        &::after{
+          content: '';
+          position: absolute;
+          display: block;
+          top: 0;
+          left: 50%;
+          width: calc(100% - 30px);
+          height: 1px;
+          background-color: #fff;
+          transform: translateX(-50%);
+        }
+      }
+      p {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #B7B5B5;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 5; /* start showing ellipsis when 5rd line is reached */
+        white-space: pre-wrap; /* let the text wrap preserving spaces */
+      }
+    }
+  }
+}
