@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/tests-app-1/static/css/main.80ecd640.css",
+    "main.js": "/tests-app-1/static/js/main.6d828aa5.js",
+    "static/media/defaultImage.jpg": "/tests-app-1/static/media/defaultImage.556ae2535cfec7b9dc2c.jpg",
+    "index.html": "/tests-app-1/index.html",
+    "main.80ecd640.css.map": "/tests-app-1/static/css/main.80ecd640.css.map",
+    "main.6d828aa5.js.map": "/tests-app-1/static/js/main.6d828aa5.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.80ecd640.css",
+    "static/js/main.6d828aa5.js"
+  ]
+}
