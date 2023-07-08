@@ -5,3 +5,11 @@
   margin: 0;
   box-sizing: border-box;
 }
+
+input, button{
+  background-color: inherit;
+  color: white;
+  outline: 0;
+  border: 0;
+  box-shadow: none;
+}

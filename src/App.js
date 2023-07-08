@@ -8,6 +8,7 @@ import TestClass from './assets/TestClass';
 
 function App() {
 
+	/*
 	const test1 = new TestClass();
 	console.log(test1)
 	test1.addTestInfo('Кто ты из jojo', 'описание описание описание');
@@ -21,6 +22,7 @@ function App() {
 	test1.addAnswer('Ваш пол?', 'Мужской', 'Кира Йошикаге', 2);
 	test1.addAnswer('Ваш пол?', 'Мужской', 'Джоске', 1);
 	console.log(test1);
+	*/
 
 	return (
 		<div className="App">

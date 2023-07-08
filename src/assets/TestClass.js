@@ -28,11 +28,10 @@ class TestClass {
       this.results.push({
          resultName,
          resultDesc: resultDesc || '',
-
          resultScore: this.calcResultScore(resultName),
-
          resultImage: resultImage || defaultImage
       });
+      console.log(this.results);
    }
 
    addQuestion(questionName, questionDesc, questionImage) {
