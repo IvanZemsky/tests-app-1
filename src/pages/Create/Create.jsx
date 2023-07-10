@@ -6,34 +6,89 @@ import TestQuestions from '../../components/TestQuestions/TestQuestions';
 
 function Create() {
 
-  const test = useRef(new TestClass());
+  const newTest = useRef(new TestClass());
 
-  const [questions, setQuestions] = useState(test.current.questions);
-  // добавить массив results и поправить функцию addResult
+  const [questions, setQuestions] = useState(newTest.current.questions);
+  const [results, setResults] = useState(newTest.current.results);
 
   const [testName, setTestName] = useState('');
   const [testDesc, setTestDesc] = useState('');
   const [resultName, setResultName] = useState('');
   const [resultDesc, setResultDesc] = useState('');
+  const [resultImage, setResultImage] = useState('');
   const [questionName, setQuestionName] = useState('');
   const [questionDesc, setQuestionDesc] = useState('');
 
   const addResult = () => {
-    test.current.addResults(resultName, resultDesc);
+    newTest.current.addResults(resultName, resultDesc);
+    setResults([...newTest.current.results])
     
-    console.log(test.current)
+    console.log(newTest.current)
   }
 
   const addQuestion = () => {
-    test.current.addQuestion(questionName, questionDesc);
-    setQuestions([...test.current.questions]);
-    console.log(test.current.questions);
+    newTest.current.addQuestion(questionName, questionDesc);
+    setQuestions([...newTest.current.questions]);
+    console.log(newTest.current.questions);
     console.log(questions);
   }
 
   const publishTest = () => {
-    test.current.addTestInfo(testName, testDesc);
-    console.log(test.current)
+    newTest.current.addTestInfo(testName, testDesc);
+    console.log(newTest.current)
+  }
+
+  const setStatus = (el, status) => {
+    const availabledStatuses = ['error', 'success'];
+    availabledStatuses.map((st) => el.classList.remove(st));
+    if (availabledStatuses.includes(status)){
+      return el.classList.add(status);
+    }
+  }
+
+  const validateFileType = (file) => {
+    console.log(file)
+    const availabledTypes = ['image/png', 'image/webp', 'image/jpeg'];
+    return availabledTypes.includes(file.type);
+  }
+
+  const setPreview = (el, preview) => {
+    if (!preview)
+      el.style.visibility = 'hidden';
+
+    el.innerHTML = preview;
+  }
+
+  const convertImage = (event) => {
+    const imageFiles = event.target.files;
+    const previewEl = event.target.parentElement.querySelector('.preview');
+    if (!imageFiles) {
+      setStatus(event.target.parentElement, 'error');
+      setPreview(previewEl, 'Вы не загрузили не одно изображение')
+      setResultImage('');
+      return;
+    }
+
+    console.log(imageFiles)
+    for (const file of imageFiles) {
+      if (!validateFileType(file)) {
+        setStatus(event.target.parentElement, 'error');
+        setPreview(previewEl, 'Неверный тип изображения');
+        setResultImage('');
+        return;
+      }
+
+      const img = document.createElement('img');
+      const imgSource = URL.createObjectURL(file);
+      console.log(imgSource);
+      img.src = imgSource;
+      img.alt = 'Загруженная картинка';
+      console.log(img)
+      setStatus(event.target.parentElement, 'success');
+      setPreview(previewEl, img.outerHTML)
+      // todo: add save 
+    }
+    // setResultImage()
   }
 
   return (
@@ -74,10 +129,28 @@ function Create() {
           onChange={(event) => setResultDesc(event.target.value)}
         />
 
+        <label>Картинка</label>
+        <div className='drag-and-drop'>
+          <div className='preview'>
+            Картинка успешно загружена
+          </div>
+          <input
+            className='load-file'
+            type="file"
+            id="resultFileInput"
+            accept="image/png, image/webp, image/jpeg"
+            onChange={convertImage}
+          />
+        </div>
+
         <button type='button' onClick={addResult}>Добавить результат</button>
       </div>
 
-      {test.current.results.length ? <TestResults/> : null}
+      {newTest.current.results.length > 0 &&
+        newTest.current.results.map((result, i) => (
+          <TestResults key={i} result={result} number={i+1}/>
+        ))
+      }
 
       <div className="create-block">
         <label>Название вопроса</label>
@@ -99,9 +172,14 @@ function Create() {
         <button type='button' onClick={addQuestion}>Добавить вопрос</button>
       </div>
 
-      {test.current.questions.length > 0 &&
-        test.current.questions.map((question, i) => (
-          <TestQuestions key={i} question={[question.questionName, question.questionDesc]} number={i+1}/>
+      {newTest.current.questions.length > 0 &&
+        newTest.current.questions.map((question, i) => (
+          <TestQuestions 
+            key={i} 
+            newTest={newTest.current}
+            question={question}
+            number={i+1}
+          />
         ))
       }
 

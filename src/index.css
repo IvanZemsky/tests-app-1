@@ -6,7 +6,7 @@
   box-sizing: border-box;
 }
 
-input, button{
+input, button, select{
   background-color: inherit;
   color: white;
   outline: 0;
