@@ -8,6 +8,7 @@ function TestResults({result, number}) {
         <p>Название: {result.resultName}</p>
         <p>Описание: {result.resultDesc}</p>
         <p>Очки: {result.resultScore}</p>
+        <img src={result.resultImage} width="140px" height="auto"/>
       </div>
     </div>
   )

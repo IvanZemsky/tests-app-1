@@ -20,9 +20,9 @@ function Create() {
   const [questionDesc, setQuestionDesc] = useState('');
 
   const addResult = () => {
-    newTest.current.addResults(resultName, resultDesc);
+    newTest.current.addResults(resultName, resultDesc, resultImage);
     setResults([...newTest.current.results])
-    
+
     console.log(newTest.current)
   }
 
@@ -79,13 +79,29 @@ function Create() {
       }
 
       const img = document.createElement('img');
-      const imgSource = URL.createObjectURL(file);
-      console.log(imgSource);
-      img.src = imgSource;
       img.alt = 'Загруженная картинка';
-      console.log(img)
-      setStatus(event.target.parentElement, 'success');
-      setPreview(previewEl, img.outerHTML)
+
+      // save img as base64 string
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        console.log(reader.result);
+        img.src = reader.result;
+        console.log(img);
+        setStatus(event.target.parentElement, 'success');
+        setPreview(previewEl, img.outerHTML);
+        setResultImage(reader.result);
+      }
+
+      reader.onerror = function (error) {
+        console.log('Error: ', error);
+        setStatus(event.target.parentElement, 'error');
+        setPreview(previewEl, 'Не удалось конвертировать изображение');
+        setResultImage('');
+      };
+
+
+
       // todo: add save 
     }
     // setResultImage()

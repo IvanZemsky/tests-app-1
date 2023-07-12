@@ -43,12 +43,14 @@ class TestClass {
       });
    }
 
-   addAnswer(questionName, answerText, answerResult, answerScore) {
+   addAnswer(questionName, answerText, answerResult, answerScore) { // переписать
+
       this.questions.find(question => question.questionName === questionName).answers.push({
          answerText,
          answerResult,
          answerScore
       });
+
       this.results.find(result => result.resultName === answerResult)
       .resultScore = this.calcResultScore(answerResult);
    }
