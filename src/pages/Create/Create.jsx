@@ -22,15 +22,12 @@ function Create() {
   const addResult = () => {
     newTest.current.addResults(resultName, resultDesc, resultImage);
     setResults([...newTest.current.results])
-
-    console.log(newTest.current)
   }
 
   const addQuestion = () => {
     newTest.current.addQuestion(questionName, questionDesc);
     setQuestions([...newTest.current.questions]);
     console.log(newTest.current.questions);
-    console.log(questions);
   }
 
   const publishTest = () => {
@@ -41,7 +38,7 @@ function Create() {
   const setStatus = (el, status) => {
     const availabledStatuses = ['error', 'success'];
     availabledStatuses.map((st) => el.classList.remove(st));
-    if (availabledStatuses.includes(status)){
+    if (availabledStatuses.includes(status)) {
       return el.classList.add(status);
     }
   }
@@ -164,7 +161,7 @@ function Create() {
 
       {newTest.current.results.length > 0 &&
         newTest.current.results.map((result, i) => (
-          <TestResults key={i} result={result} number={i+1}/>
+          <TestResults key={i} result={result} number={i + 1} />
         ))
       }
 
@@ -190,11 +187,11 @@ function Create() {
 
       {newTest.current.questions.length > 0 &&
         newTest.current.questions.map((question, i) => (
-          <TestQuestions 
-            key={i} 
+          <TestQuestions
+            key={i}
             newTest={newTest.current}
             question={question}
-            number={i+1}
+            number={i}
           />
         ))
       }
