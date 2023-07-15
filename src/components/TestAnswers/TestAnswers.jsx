@@ -2,18 +2,15 @@ import React, { useRef, useState } from 'react'
 
 function TestAnswers({ newTest, question, number }) {
 
-   console.log(newTest)
    const [answerText, setAnswerText] = useState('');
    const [answerResult, setAnswerResult] = useState(newTest.results[0]?.resultName);
    const [answerScore, setAnswerScore] = useState(1);
 
    const saveButton = useRef(null);
 
-   console.log(answerResult, newTest);
-
    return (
       <div className='answer-block'>
-         <p>Ответ №{number+1}</p>
+         <p>Ответ №{number + 1}</p>
 
          <input
             id="answer-text"

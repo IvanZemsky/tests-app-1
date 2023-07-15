@@ -1,107 +1,53 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import TestClass from '../../assets/TestClass'
 import './Create.scss';
 import TestResults from '../../components/TestResults/TestResults'
 import TestQuestions from '../../components/TestQuestions/TestQuestions';
+import TestCreateQuestion from '../../components/TestCreateQuestion/TestCreateQuestion';
+import { saveImage } from '../../utils/dragdrop';
+import { updateTests } from '../../utils/storage';
 
-function Create() {
+function Create(props) {
 
   const newTest = useRef(new TestClass());
 
-  const [questions, setQuestions] = useState(newTest.current.questions);
-  const [results, setResults] = useState(newTest.current.results);
+  const [questions, setQuestions] = useState([]);
+  const [results, setResults] = useState([]);
 
   const [testName, setTestName] = useState('');
   const [testDesc, setTestDesc] = useState('');
+  const [testImage, setTestImage] = useState('');
   const [resultName, setResultName] = useState('');
   const [resultDesc, setResultDesc] = useState('');
   const [resultImage, setResultImage] = useState('');
   const [questionName, setQuestionName] = useState('');
   const [questionDesc, setQuestionDesc] = useState('');
+  const [questionImage, setQuestionImage] = useState('');
 
   const addResult = () => {
     newTest.current.addResults(resultName, resultDesc, resultImage);
     setResults([...newTest.current.results])
+
+    //console.log(newTest.current.results)
   }
 
   const addQuestion = () => {
-    newTest.current.addQuestion(questionName, questionDesc);
+    newTest.current.addQuestion(questionName, questionDesc, questionImage);
     setQuestions([...newTest.current.questions]);
-    console.log(newTest.current.questions);
+
+    //console.log(newTest.current.questions);
   }
+
+  useEffect(() => {
+    console.log(props.testsList)
+  }, [props.testsList])
 
   const publishTest = () => {
-    newTest.current.addTestInfo(testName, testDesc);
-    console.log(newTest.current)
-  }
-
-  const setStatus = (el, status) => {
-    const availabledStatuses = ['error', 'success'];
-    availabledStatuses.map((st) => el.classList.remove(st));
-    if (availabledStatuses.includes(status)) {
-      return el.classList.add(status);
-    }
-  }
-
-  const validateFileType = (file) => {
-    console.log(file)
-    const availabledTypes = ['image/png', 'image/webp', 'image/jpeg'];
-    return availabledTypes.includes(file.type);
-  }
-
-  const setPreview = (el, preview) => {
-    if (!preview)
-      el.style.visibility = 'hidden';
-
-    el.innerHTML = preview;
-  }
-
-  const convertImage = (event) => {
-    const imageFiles = event.target.files;
-    const previewEl = event.target.parentElement.querySelector('.preview');
-    if (!imageFiles) {
-      setStatus(event.target.parentElement, 'error');
-      setPreview(previewEl, 'Вы не загрузили не одно изображение')
-      setResultImage('');
-      return;
-    }
-
-    console.log(imageFiles)
-    for (const file of imageFiles) {
-      if (!validateFileType(file)) {
-        setStatus(event.target.parentElement, 'error');
-        setPreview(previewEl, 'Неверный тип изображения');
-        setResultImage('');
-        return;
-      }
-
-      const img = document.createElement('img');
-      img.alt = 'Загруженная картинка';
-
-      // save img as base64 string
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        console.log(reader.result);
-        img.src = reader.result;
-        console.log(img);
-        setStatus(event.target.parentElement, 'success');
-        setPreview(previewEl, img.outerHTML);
-        setResultImage(reader.result);
-      }
-
-      reader.onerror = function (error) {
-        console.log('Error: ', error);
-        setStatus(event.target.parentElement, 'error');
-        setPreview(previewEl, 'Не удалось конвертировать изображение');
-        setResultImage('');
-      };
-
-
-
-      // todo: add save 
-    }
-    // setResultImage()
+    const newTestInstance = new TestClass(newTest.testInfo, questions, results);
+    newTestInstance.addTestInfo(testName, testDesc, testImage);
+    const updatedTests = [...props.testsList, newTestInstance];
+    props.setTestsList(updatedTests);
+    updateTests(updatedTests);
   }
 
   return (
@@ -123,6 +69,20 @@ function Create() {
           maxLength={300}
           onChange={(event) => setTestDesc(event.target.value)}
         />
+
+        <label>Картинка</label>
+        <div className='drag-and-drop'>
+          <div className='preview'>
+            Картинка успешно загружена
+          </div>
+          <input
+            className='load-file'
+            type="file"
+            id="testFileInput"
+            accept="image/png, image/webp, image/jpeg"
+            onChange={(event) => saveImage(event, setTestImage)}
+          />
+        </div>
       </div>
 
       <div className="create-block">
@@ -152,7 +112,7 @@ function Create() {
             type="file"
             id="resultFileInput"
             accept="image/png, image/webp, image/jpeg"
-            onChange={convertImage}
+            onChange={(event) => saveImage(event, setResultImage)}
           />
         </div>
 
@@ -165,25 +125,14 @@ function Create() {
         ))
       }
 
-      <div className="create-block">
-        <label>Название вопроса</label>
-        <input
-          type="text"
-          id="questionNameInput"
-          maxLength={100}
-          onChange={(event) => setQuestionName(event.target.value)}
+      {newTest.current.results.length > 0 && (
+        <TestCreateQuestion
+          setQuestionName={setQuestionName}
+          setQuestionDesc={setQuestionDesc}
+          setQuestionImage={setQuestionImage}
+          addQuestion={addQuestion}
         />
-
-        <label>Описание</label>
-        <input
-          type="text"
-          id="questionDescInput"
-          maxLength={1000}
-          onChange={(event) => setQuestionDesc(event.target.value)}
-        />
-
-        <button type='button' onClick={addQuestion}>Добавить вопрос</button>
-      </div>
+      )}
 
       {newTest.current.questions.length > 0 &&
         newTest.current.questions.map((question, i) => (

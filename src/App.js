@@ -1,28 +1,25 @@
 import './App.css';
+import { useState } from 'react'
 import Header from './components/Header/Header';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
 import Tests from './pages/Tests/Tests';
-import Create from './pages/Create/Create';
 import Test from './pages/Test/Test';
+import Create from './pages/Create/Create';
 import TestClass from './assets/TestClass';
+import { getTests } from './utils/storage';
 
 function App() {
 
 	/*
-	const test1 = new TestClass();
-	console.log(test1)
-	test1.addTestInfo('Кто ты из jojo', 'описание описание описание');
-	test1.addResults('Кира Йошикаге');
-	test1.addResults('Джоске');
-	test1.addQuestion('Сколько вам лет?', null, null);
-	test1.addAnswer('Сколько вам лет?', '18', 'Кира Йошикаге', 3);
-	test1.addAnswer('Сколько вам лет?', '21', 'Кира Йошикаге', 1);
-	test1.addAnswer('Сколько вам лет?', '19', 'Джоске', 1);
-	test1.addQuestion('Ваш пол?', null, null);
-	test1.addAnswer('Ваш пол?', 'Мужской', 'Кира Йошикаге', 2);
-	test1.addAnswer('Ваш пол?', 'Мужской', 'Джоске', 1);
-	console.log(test1);
+	const fakeTest = new TestClass();
+	fakeTest.addTestInfo('testname', 'testdesc')
 	*/
+
+	const tests = getTests();
+
+	const [testsList, setTestsList] = useState(tests);
+
+	const {testNumber} = useParams();
 
 	return (
 		<div className="App">
@@ -31,9 +28,18 @@ function App() {
 				<Header />
 
 				<Routes>
-					<Route path="/" element={<Tests />} />
-					<Route path="/create" element={<Create />} />
-					<Route path="/test" element={<Test/>} />
+					<Route path="/" element={<Tests testsList={testsList}/>} />
+					<Route path="/create" element={
+						<Create
+							testsList={testsList}
+							setTestsList={setTestsList}
+						/>
+					}/>
+					<Route path="/test/">
+						<Route path=":testNumber" element={
+							<Test testsList={testsList}/>
+						}/>
+					</Route>
 				</Routes>
 			</BrowserRouter>
 		</div>

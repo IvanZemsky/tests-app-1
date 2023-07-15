@@ -1,17 +1,17 @@
 import defaultImage from '../img/defaultImage.jpg';
 
 class TestClass {
-   constructor(testInfo, questions, results) {
+   constructor(testInfo, questions = [], results = []) {
       this.testInfo = testInfo;
-      this.questions = [];
-      this.results = [];
+      this.questions = questions;
+      this.results = results;
    }
 
    addTestInfo(testName, testDesc, testImage) {
       this.testInfo = {
          testName,
          testDesc,
-         imatestImagege: testImage || defaultImage
+         testImage: testImage || defaultImage
       }
    }
 
@@ -43,7 +43,7 @@ class TestClass {
       });
    }
 
-   addAnswer(questionName, answerNumber, answerText, answerResult, answerScore) { // переписать
+   addAnswer(questionName, answerNumber, answerText, answerResult, answerScore) {
 
       this.questions.find(question => question.questionName === questionName)
       .answers[answerNumber] = {
@@ -51,6 +51,11 @@ class TestClass {
          answerResult,
          answerScore
       };
+
+      if (!answerResult) {
+         console.log('no result in list');
+         return;
+      }
 
       this.results.find(result => result.resultName === answerResult)
       .resultScore = this.calcResultScore(answerResult);

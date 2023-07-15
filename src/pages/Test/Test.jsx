@@ -1,9 +1,29 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
+import { useParams } from 'react-router-dom';
 import defaultImage from '../../img/defaultImage.jpg';
 import './Test.scss';
 
 
-function Test() {
+function Test({testsList}) {
+
+  const [step, setStep] = useState(0);
+
+  const params = useParams();
+  const testNumber = params.testNumber;
+  //console.log(testsList)
+  
+  const currentTest = testsList.at(testNumber);
+  console.log(currentTest)
+  if (currentTest === undefined) {
+    return (
+      <>
+        <h1>Не найден</h1>
+      </>
+    )
+  }
+
+
+  /*
   let answers = useRef([]);
 
   const changeActiveState = (el, state = false) => {
@@ -37,10 +57,12 @@ function Test() {
 
     return submitBtn.classList.remove('disabled');
   }
+  */
 
   return (
     <div className='test-interface'>
       <div className='question-info'>
+        <h2>{currentTest.testInfo.testName}</h2>
         <h5>Мой вопрос</h5>
         <p>Это очень большое описание для вопроса, я даже не знаю, что сюда еще написать, чтобы оно стало еще больше и шире</p>
       </div>
@@ -49,10 +71,10 @@ function Test() {
           <img src={defaultImage} />
         </div>
         <ul className='answer-items'>
-          <li className='answer-item' data-name="Выбор 1" onClick={addAnswer}>Выбор 1</li>
-          <li className='answer-item' data-name="Выбор 2" onClick={addAnswer}>Выбор 2</li>
-          <li className='answer-item' data-name="Выбор 3" onClick={addAnswer}>Выбор 3</li>
-          <li className='answer-item' data-name="Выбор 4" onClick={addAnswer}>Выбор 4</li>
+          <li className='answer-item' data-name="Выбор 1">Выбор 1</li>
+          <li className='answer-item' data-name="Выбор 2">Выбор 2</li>
+          <li className='answer-item' data-name="Выбор 3">Выбор 3</li>
+          <li className='answer-item' data-name="Выбор 4">Выбор 4</li>
         </ul>
         <div className="question-submit disabled">
           <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24">

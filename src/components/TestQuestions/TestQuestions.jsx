@@ -11,6 +11,7 @@ function TestQuestions({ newTest, question, ...props }) {
       <h2 className='question-title'>Вопрос № {props.number + 1}</h2>
       <p>Вопрос: {question.questionName}</p>
       <p>Описание: {question.questionDesc}</p>
+      <img src={question.questionImage} width="140px" height="auto"/>
 
       {[...new Array(answersAmount)].map((answerNumber, i) => (
         <TestAnswers key={i} newTest={newTest} question={question} number={i} />
