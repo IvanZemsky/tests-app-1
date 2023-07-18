@@ -19,7 +19,7 @@ function App() {
 
 	const [testsList, setTestsList] = useState(tests);
 
-	const {testNumber} = useParams();
+	const { testNumber } = useParams();
 
 	return (
 		<div className="App">
@@ -28,18 +28,16 @@ function App() {
 				<Header />
 
 				<Routes>
-					<Route path="/" element={<Tests testsList={testsList}/>} />
-					<Route path="/create" element={
+					<Route path="/" element={<Tests testsList={testsList} />} />
+					<Route path="create" element={
 						<Create
 							testsList={testsList}
 							setTestsList={setTestsList}
 						/>
-					}/>
-					<Route path="/test/">
-						<Route path=":testNumber" element={
-							<Test testsList={testsList}/>
-						}/>
-					</Route>
+					} />
+					<Route path="test/:testNumber" element={
+						<Test testsList={testsList} />
+					} />
 				</Routes>
 			</BrowserRouter>
 		</div>

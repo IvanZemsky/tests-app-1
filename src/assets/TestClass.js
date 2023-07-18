@@ -27,7 +27,7 @@ class TestClass {
    addResults(resultName, resultDesc, resultImage) {
       this.results.push({
          resultName,
-         resultDesc: resultDesc || '',
+         resultDesc: resultDesc || 'Описание отсутствует',
          resultScore: this.calcResultScore(resultName),
          resultImage: resultImage || defaultImage
       });
